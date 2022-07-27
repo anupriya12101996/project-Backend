@@ -25,7 +25,7 @@ exports.userRegister = async (req, res) => {
     }
     catch(err){
         console.log(err);
-        res.status(500).send({message: "Something went wrong..!!", data: err});
+        res.status(500).send({message: "Something went wrong..!!", data: false, err: err});
     }
 }
 
@@ -37,7 +37,7 @@ exports.userLogin = async (req, res) => {
         if(useremail){
             const isMatch = await bcrypt.compare(password, useremail.password);
             if (isMatch) {
-                res.status(200).send({message: "Success", data: true});
+                res.status(200).send({message: "Success", data: useremail});
             } else {
                 res.status(200).send({message: "Invalid Details", data: false});
             }
@@ -48,6 +48,48 @@ exports.userLogin = async (req, res) => {
     }
     catch(err){
         console.log(err);
-        res.status(500).send({message: "Something went wrong..!!", data: err});
+        res.status(500).send({message: "Something went wrong..!!", data: false, err: err});
+    }
+}
+
+exports.addStudent = async (req, res) => {
+    try {
+        const student = new AddStudent({
+            name: req.body.name,
+            dob: req.body.dob,
+            school: req.body.school,
+            class: req.body.class,
+            division: req.body.division,
+            status: req.body.status,
+        });
+        await student.save();
+        res.status(200).send({message: "Success", data: true});
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).send({message: "Something went wrong..!!", data: false, err: err});
+    }
+}
+
+exports.getStudents = async (req, res) => {
+    try {
+        const students = await AddStudent.find();
+        res.status(200).send({message: "Success", data: students});
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).send({message: "Something went wrong..!!", data: false, err: err});
+    }
+}
+
+exports.deleteStudent = async (req, res) => {
+    try {
+        const id = req.body.id;
+        await AddStudent.findByIdAndDelete(id);
+        res.status(200).send({message: "Success", data: true});
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).send({message: "Something went wrong..!!", data: false, err: err});
     }
 }
