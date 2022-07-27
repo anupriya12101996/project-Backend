@@ -7,5 +7,6 @@ Router.post('/login', userController.userLogin);
 Router.post('/add-student', userController.addStudent);
 Router.get('/get-student', userController.getStudents);
 Router.post('/delete-student', userController.deleteStudent);
+Router.post('/update-student', userController.updateStudent);
 
 module.exports = Router;

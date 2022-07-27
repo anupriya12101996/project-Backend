@@ -93,3 +93,22 @@ exports.deleteStudent = async (req, res) => {
         res.status(500).send({message: "Something went wrong..!!", data: false, err: err});
     }
 }
+
+exports.updateStudent = async (req, res) => {
+    try{
+        const id = req.body.id;
+        const student = await AddStudent.findById(id);
+        student.name = req.body.name;
+        student.dob = req.body.dob;
+        student.school = req.body.school;
+        student.class = req.body.class;
+        student.division = req.body.division;
+        student.status = req.body.status;
+        await student.save();
+        res.status(200).send({message: "Success", data: true});
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).send({message: "Something went wrong..!!", data: false, err: err});
+    }
+}
